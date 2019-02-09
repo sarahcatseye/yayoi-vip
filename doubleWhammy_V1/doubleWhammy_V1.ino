@@ -42,7 +42,7 @@
       #define PIN 6
       
       Adafruit_NeoPixel strip = Adafruit_NeoPixel(270, PIN, NEO_GRB + NEO_KHZ800);
-      int stripDim[] = {0, 75, 140, 167, 182, 216, 240, 251};
+      int stripDim[] = {0, 75, 141, 167, 183, 217, 241, 251};
                   
                   //int step1FirstPixel=0; //a1
                   //int step1EndPixel=5;//a2
