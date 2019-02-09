@@ -1,4 +1,4 @@
-// # Editor    :Jiang from DFRobot, Jordan Lyn
+// # Editor    :Jiang from DFRobot, Jordan Lyn 2
 // # Data      :18.09.2012
 
 // # Product name:ultrasonic scanner
