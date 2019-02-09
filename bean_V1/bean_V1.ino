@@ -1,7 +1,7 @@
-// # Editor    :Jiang from DFRobot
+// # Editor    :Jiang from DFRobot, Jordan Lyn
 // # Data      :18.09.2012
 
-// # Product name:ultrasonic scanner 
+// # Product name:ultrasonic scanner
 // # Product SKU:SEN0001
 // # Version :  0.2
 
@@ -22,13 +22,13 @@
 #define echoPin 12
 #define led 11
 #define led2 10
-      
+
 //int distance=0;
 boolean checker= 1;
 boolean checker2 =1;
 
 long duration, distance;
- 
+
 //unsigned int Distance=0;
 //unsigned int Distance2=0;
 //uint8_t EnPwmCmd[4]={0x44,0x02,0xbb,0x01};    // distance measure command
@@ -43,16 +43,16 @@ long duration, distance;
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(270, PIN, NEO_GRB + NEO_KHZ800);
 int stripDim[] = {0, 72, 131, 178, 210};
-            
+
 //int step1FirstPixel=0; //a1
 //int step1EndPixel=5;//a2
 //int step2FirstPixel=5;//b1
 //int step2EndPixel=17;//b2
 //int step3FirstPixel=17;//c1
 //int step3EndPixel=32;//c2
-            
 
- 
+
+
 void setup()
 {                                 // Serial initialization
   Serial.begin(9600);                         // Sets the baud rate to 9600
@@ -60,15 +60,15 @@ void setup()
 
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  
+
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
   //brighten(e1,e2);
   delay(50);
 }
- 
+
 void loop()
-{        
+{
 //PWM_Mode();
 //delay(20);
 calcDis();
@@ -104,12 +104,12 @@ int brightenCount=0;
       delay(100);
     }
 
-    brightenCount++;     
+    brightenCount++;
   }
-   
+
   colorWipe(strip.Color(0, 0, 0), 20);
- 
-} 
+
+}
 //PWM mode setup function
 // 0 to 255
 void brighten(int stripStart, int stripEnd ) {
@@ -124,7 +124,7 @@ void brighten(int stripStart, int stripEnd ) {
   }
   //delay(1500);
 }
-      
+
 // 255 to 0
 void darken(int stripStart, int stripEnd ) {
   Serial.begin(9600);
@@ -140,13 +140,13 @@ void darken(int stripStart, int stripEnd ) {
   }
   delay(1500);
 }
-      
+
 void bothdim(int strip1Start, int strip1End, int strip2Start, int strip2End){
-  
+
   uint16_t i, j,i2,j2;
   for (j = 0, j2=100; j < 100; j=j+3, j2=j2-3) {
     for (i = strip1Start, i2 =strip2Start; (i < strip1End)||(i2<strip2End); i++,i2++) {
-      
+
       if(i>=strip1End){
         i=strip1End-1;
       }
@@ -158,13 +158,13 @@ void bothdim(int strip1Start, int strip1End, int strip2Start, int strip2End){
     }
     strip.show();
     delay(10);
-  }   
+  }
   //PWM_Mode();//NEWWW
   calcDis();
 }
 
 
- 
+
 
 
 void theaterChase(uint32_t c, uint8_t wait) {
@@ -210,10 +210,10 @@ uint32_t Wheel(byte WheelPos) {
 }
 
       void colorWipe(uint32_t c, uint8_t wait) {
-  
+
   for(uint16_t i=0; i<strip.numPixels(); i++) {
     strip.setPixelColor(i, c);
-    
+
     //delay(wait);
   }
   strip.show();
@@ -228,7 +228,7 @@ void calcDis(){
   //delayMicroseconds(1000); - Removed this line
   delayMicroseconds(10); // Added this line
   digitalWrite(trigPin, LOW);
-  
+
   duration = pulseIn(echoPin, HIGH);
   distance = (duration/2) / 29.1;
   //Serial.println(distance);
@@ -238,39 +238,39 @@ void calcDis(){
     checker=0;
   }
   else if(7 < distance < 40) {
-    //Serial.print("DETECTED ");          
-    checker=1;          
+    //Serial.print("DETECTED ");
+    checker=1;
   }
   delay(20);
 }
 
 
 /* void PWM_Mode_Setup()
-{ 
+{
   pinMode(URTRIG,OUTPUT);                     // A low pull on pin COMP/TRIG
   digitalWrite(URTRIG,HIGH);                  // Set to HIGH
-  
+
   pinMode(URPWM, INPUT);                      // Sending Enable PWM mode command
-  
+
   for(int i=0;i<4;i++)
   {
       Serial.write(EnPwmCmd[i]);
-  } 
+  }
 }
- 
+
 /*
 void PWM_Mode()
 {                              // a low pull on pin COMP/TRIG  triggering a sensor reading
     digitalWrite(URTRIG, LOW);
     digitalWrite(URTRIG, HIGH);               // reading Pin PWM will output pulses
-     
+
     unsigned long DistanceMeasured=pulseIn(URPWM,LOW);
-    
-     
+
+
     if(DistanceMeasured>=10200)
     {              // the reading is invalid.
       Serial.println("Invalid");
-      checker=0;    
+      checker=0;
     }
     else
     {
@@ -282,8 +282,7 @@ void PWM_Mode()
       Serial.println("cm");
       if (10<distance<33){
       checker=1;
-      
+
     }
 
 }}*/
-
