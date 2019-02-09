@@ -117,7 +117,7 @@ void brighten(int stripStart, int stripEnd ) {
 
   for (j = 0; j < 100; j=j+3) {
     for (i = stripStart; i < stripEnd; i++) {
-      strip.setPixelColor(i, j, j, j);
+      strip.setPixelColor(i, j, j/2, j);
     }
     strip.show();
     delay(10);
@@ -153,8 +153,8 @@ void bothdim(int strip1Start, int strip1End, int strip2Start, int strip2End){
       if(i2>=strip2End){
         i2=strip2End-1;
       }
-      strip.setPixelColor(i, j2, j2, j2);
-      strip.setPixelColor(i2, j, j, j);
+      strip.setPixelColor(i, j2, j2 / 2, j2);
+      strip.setPixelColor(i2,j, j / 2, j);
     }
     strip.show();
     delay(10);
@@ -286,4 +286,3 @@ void PWM_Mode()
     }
 
 }}*/
-
