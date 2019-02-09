@@ -36,7 +36,7 @@ long duration, distance;
 
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
-  #include <avr/power.h>
+#include <avr/power.h>
 #endif
 
 #define PIN 6
@@ -69,110 +69,101 @@ void setup()
 }
  
 void loop()
-{////
-
-
-  
- //PWM_Mode();
- ///delay(20);
+{ 
+//PWM_Mode();
+///delay(20);
 calcDis();
 int brightenCount=0;
   while(checker){
-        int stripArraySize = sizeof(stripDim) / sizeof(int);
-        if (brightenCount==0){
-          brighten(stripDim[stripArraySize - 2], stripDim[stripArraySize - 1]);
-        }
-
-        /*bothdim(a1,a2,b1, b2);
-        delay(50);
-        bothdim(b1,b2,c1,c2);
-        delay(50);
-        bothdim(c1,c2,d1,d2);
-        delay(50);
-        bothdim(d1,d2,e1,e2);
-        delay(50);
-        bothdim(e1,e2,d1,d2);
-        delay(50);
-        bothdim(d1,d2,c1,c2);
-        delay(50);
-        bothdim(c1,c2,b1,b2);
-        delay(50);
-        bothdim(b1,b2,a1,a2);
-        delay(50);*/
-        for (int i = stripArraySize - 1; i >= 2; i--) {
-          bothdim(stripDim[i - 1], stripDim[i], stripDim[i - 2], stripDim[i - 1]);
-          delay(100);
-        }
-        for (int i = 0; i < stripArraySize - 2; i++) {
-          bothdim(stripDim[i], stripDim[i + 1], stripDim[i + 1], stripDim[i + 2]);
-          delay(100);
-        }
-        brightenCount++;
-        
+    int stripArraySize = sizeof(stripDim) / sizeof(int);
+    if (brightenCount==0){
+      brighten(stripDim[stripArraySize - 2], stripDim[stripArraySize - 1]);
+    }
+    /*bothdim(a1,a2,b1, b2);
+    delay(50);
+    bothdim(b1,b2,c1,c2);
+    delay(50);
+    bothdim(c1,c2,d1,d2);
+    delay(50);
+    bothdim(d1,d2,e1,e2);
+    delay(50);
+    bothdim(e1,e2,d1,d2);
+    delay(50);
+    bothdim(d1,d2,c1,c2);
+    delay(50);
+    bothdim(c1,c2,b1,b2);
+    delay(50);
+    bothdim(b1,b2,a1,a2);
+    delay(50);*/
+    for (int i = stripArraySize - 1; i >= 2; i--) {
+      bothdim(stripDim[i - 1], stripDim[i], stripDim[i - 2], stripDim[i - 1]);
+      delay(100);
+    }
+    for (int i = 0; i < stripArraySize - 2; i++) {
+      bothdim(stripDim[i], stripDim[i + 1], stripDim[i + 1], stripDim[i + 2]);
+      delay(100);
+    }
+    brightenCount++;
   }
-   
-
-   colorWipe(strip.Color(0, 0, 0), 20);
- 
+  colorWipe(strip.Color(0, 0, 0), 20);
 }                      //PWM mode setup function
 
 
 
-      // 0 to 255
-      void brighten(int stripStart, int stripEnd ) {
-        uint16_t i, j;
+// 0 to 255
+void brighten(int stripStart, int stripEnd ) {
+  uint16_t i, j;
+
+  for (j = 0; j < 100; j=j+3) {
+    for (i = stripStart; i < stripEnd; i++) {
+      strip.setPixelColor(i, j, j, j);
+    }
+    strip.show();
+    delay(10);
+  }
+  //delay(1500);
+}
       
-        for (j = 0; j < 100; j=j+3) {
-          for (i = stripStart; i < stripEnd; i++) {
-            strip.setPixelColor(i, j, j, j);
-          }
-          strip.show();
-          delay(10);
-        }
-        //delay(1500);
+// 255 to 0
+void darken(int stripStart, int stripEnd ) {
+  Serial.begin(9600);
+  uint16_t i, j;
+
+  for (j = 50; j > 0; j--) {
+    for (i = stripStart; i < stripEnd; i++) {
+      strip.setPixelColor(i, j, j, j);
+    }
+    strip.show();
+    delay(10);
+    Serial.println(j);
+  }
+  delay(1500);
+}
+      
+void bothdim(int strip1Start, int strip1End, int strip2Start, int strip2End){
+uint16_t i, j,i2,j2;
+  Serial.print("calling both dim");
+  for (j = 0, j2=100; j < 100; j=j+3, j2=j2-3) {
+    for (i = strip1Start, i2 =strip2Start; (i < strip1End)||(i2<strip2End); i++,i2++) {
+      
+      if(i>=strip1End){
+        i=strip1End-1;
+      }
+      if(i2>=strip2End){
+        i2=strip2End-1;
       }
       
-      // 255 to 0
-      void darken(int stripStart, int stripEnd ) {
-        Serial.begin(9600);
-        uint16_t i, j;
-      
-        for (j = 50; j > 0; j--) {
-          for (i = stripStart; i < stripEnd; i++) {
-            strip.setPixelColor(i, j, j, j);
-          }
-          strip.show();
-          delay(10);
-          Serial.println(j);
-        }
-        delay(1500);
-      }
-      
-      void bothdim(int strip1Start, int strip1End, int strip2Start, int strip2End){
-      uint16_t i, j,i2,j2;
-        Serial.print("calling both dim");
-        for (j = 0, j2=100; j < 100; j=j+3, j2=j2-3) {
-          for (i = strip1Start, i2 =strip2Start; (i < strip1End)||(i2<strip2End); i++,i2++) {
-            
-            if(i>=strip1End){
-              i=strip1End-1;
-            }
-            if(i2>=strip2End){
-              i2=strip2End-1;
-            }
-            
-            strip.setPixelColor(i, j2, j2, j2);
-            strip.setPixelColor(i2, j, j, j);
-          }
-          
-          strip.show();
-          delay(10);
-        }
-        
-        //PWM_Mode();//NEWWW
-        calcDis();
-      
-      }
+      strip.setPixelColor(i, j2, j2, j2);
+      strip.setPixelColor(i2, j, j, j);
+    }
+    
+    strip.show();
+    delay(10);
+  }
+  //PWM_Mode();//NEWWW
+  calcDis();
+
+}
 
 
  
@@ -192,12 +183,13 @@ void theaterChase(uint32_t c, uint8_t wait) {
         strip.setPixelColor(i+q, 0);        //turn every third pixel off
       }
     }
-  }}
+  }
+}
 
-  void rainbowCycle(uint8_t wait) {
-  uint16_t i, j;
+void rainbowCycle(uint8_t wait) {
+uint16_t i, j;
 
-  for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
+for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
     for(i=0; i< strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
     }
@@ -205,6 +197,7 @@ void theaterChase(uint32_t c, uint8_t wait) {
     delay(wait);
   }
 }
+
 uint32_t Wheel(byte WheelPos) {
   WheelPos = 255 - WheelPos;
   if(WheelPos < 85) {
@@ -218,11 +211,10 @@ uint32_t Wheel(byte WheelPos) {
   return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }
 
-      void colorWipe(uint32_t c, uint8_t wait) {
-  
+void colorWipe(uint32_t c, uint8_t wait) {
+
   for(uint16_t i=0; i<strip.numPixels(); i++) {
     strip.setPixelColor(i, c);
-    
     //delay(wait);
   }
   strip.show();
@@ -231,28 +223,27 @@ uint32_t Wheel(byte WheelPos) {
 
 void calcDis(){
 
-          digitalWrite(trigPin, LOW);  // Added this line
-          delayMicroseconds(2); // Added this line
-          digitalWrite(trigPin, HIGH);
-        //  delayMicroseconds(1000); - Removed this line
-          delayMicroseconds(10); // Added this line
-          digitalWrite(trigPin, LOW);
-          
-          duration = pulseIn(echoPin, HIGH);
-          distance = (duration/2) / 29.1;
-          Serial.println(distance);
-        
-          if (distance > 40) {  // This is where the LED On/Off happens
-               //Serial.print("NEUTRAL ");
-               checker=0;
-          }
-          else
-          {
-             Serial.println("DETECTED ");
-             checker=1;           
-          }
-          delay(20);
-          
+  digitalWrite(trigPin, LOW);  // Added this line
+  delayMicroseconds(2); // Added this line
+  digitalWrite(trigPin, HIGH);
+//  delayMicroseconds(1000); - Removed this line
+  delayMicroseconds(10); // Added this line
+  digitalWrite(trigPin, LOW);
+  
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration/2) / 29.1;
+  Serial.println(distance);
+
+  if (distance > 40) {  // This is where the LED On/Off happens
+       //Serial.print("NEUTRAL ");
+       checker=0;
+  }
+  else
+  {
+     Serial.println("DETECTED ");
+     checker=1;           
+  }
+  delay(20);          
 
 }
 
